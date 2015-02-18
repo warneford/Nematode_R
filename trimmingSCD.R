@@ -6,7 +6,7 @@ PalData[["SCD_Data"]] <- lapply (PalData[["SCD_Data"]], function(x) {x[,!(names(
 PalData[["SCD_Data"]] <- lapply(PalData[["SCD_Data"]], function(df) {within(df, blot[x==0 & y==0 | gweight==0] <- NA)})
 PalData[["SCD_Data"]] <- lapply(PalData[["SCD_Data"]], function(df) {within(df, gweight[x==0 & y==0 | gweight==0] <- NA)})
 
-# Combine all blot data
+# Combine all blot data asdadfsdf
 PalData[["SCD_blot"]] <- cbind(PalData[["SCD_Data"]][[1]][,c(1,2)], as.data.frame(lapply(PalData[["SCD_Data"]], function(x) {x$blot})))
 names(PalData[["SCD_blot"]]) <- gsub("X", "", names(PalData[["SCD_blot"]]))
 
