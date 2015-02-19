@@ -9,5 +9,4 @@ PalData[["SCD_Data"]] = list()
 PalData[["SCD_Data"]] <- lapply(SCDfiles.path, read.csv)
 names(PalData[["SCD_Data"]]) <- gsub(".csv","", SCDfiles)
 names(PalData[["SCD_Data"]]) <- gsub("SCD","", names(PalData[["SCD_Data"]]))
-
-# testing github upload functionality
+names(PalData[["SCD_Data"]]) <- gsub("pal-1", "pal.1", names(PalData[["SCD_Data"]]))

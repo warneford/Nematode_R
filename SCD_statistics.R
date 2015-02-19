@@ -32,18 +32,17 @@ names(EmbAxisList) <- EmbOrientation
 # group embryos by axis orientation
 EmbAxisblot <- lapply(EmbAxisList, function(x) {  
 PalData[["SCD_blot"]][, names(PalData$SCD_blot) %in% x]})
-names(EmbAxisGroup) <- EmbOrientation
        
 # Compute statistics for each axis orientation subset
 # Right
-PalData[["SCDblotsummary"]][,"NormalizedR_Mean"] <- apply(EmbAxisGroup$R[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedR_Variance"] <- apply(EmbAxisGroup$R[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedR_Std_dev"] <- apply(EmbAxisGroup$R[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedR_Mean"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedR_Variance"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedR_Std_dev"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
 
 # Left
-PalData[["SCDblotsummary"]][,"NormalizedL_Mean"] <- apply(EmbAxisGroup$L[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedL_Variance"] <- apply(EmbAxisGroup$L[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedL_Std_dev"] <- apply(EmbAxisGroup$L[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedL_Mean"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedL_Variance"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
+PalData[["SCDblotsummary"]][,"NormalizedL_Std_dev"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
 
 
 # Rank pal-1 data by Standard deviation (Method 1)
