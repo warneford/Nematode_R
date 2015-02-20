@@ -10,6 +10,9 @@ PalData[["SCD_Data"]] <- lapply(PalData[["SCD_Data"]], function(df) {within(df, 
 PalData[["SCD_blot"]] <- cbind(PalData[["SCD_Data"]][[1]][,c(1,2)], as.data.frame(lapply(PalData[["SCD_Data"]], function(x) {x$blot})))
 names(PalData[["SCD_blot"]]) <- gsub("X", "", names(PalData[["SCD_blot"]]))
 
+# Generate time column for each cell
+library(stringr)
+PalData$SCD_blot$cellTime <- as.numeric(str_split_fixed(PalData$SCD_blot$cellTime, ":", 2)[,2])
 
 # Combine all gweight data
 PalData[["gweight"]] <- cbind(PalData[["SCD_Data"]][[1]][,c(1,2)], as.data.frame(lapply(PalData[["SCD_Data"]], function(x) {x$gweight})))

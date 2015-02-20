@@ -23,36 +23,15 @@ PalData[["SCDblotsummary"]][,"NormalizedZ_Variance"] <- apply(PalData[["Normaliz
 PalData[["SCDblotsummary"]][,"NormalizedZ_Std_dev"] <- apply(PalData[["NormalizedZ_blot"]][-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
 
 # Generate list of embryos grouped by axis
-EmbOrientation <- c("R", "L") # Enter desired axis groupings, "L" will extract all axis entries ending with "L"
+EmbOrientationRL <- c("R", "L") # Enter desired axis groupings, "L" will extract all axis entries ending with "L"
 EmbAxisList <- list()
-EmbAxisList <- lapply(EmbOrientation, function(x) 
+EmbAxisList <- lapply(EmbOrientationRL, function(x) 
   {AuxRW10890[grep(paste0("^.+",x, "$"), AuxRW10890$axis), "name"]})
-names(EmbAxisList) <- EmbOrientation
+names(EmbAxisList) <- EmbOrientationRL
 
-# group embryos by axis orientation
-EmbAxisblot <- lapply(EmbAxisList, function(x) {  
-PalData[["SCD_blot"]][, names(PalData$SCD_blot) %in% x]})
-       
-# Compute statistics for each axis orientation subset
-# Right
-PalData[["SCDblotsummary"]][,"NormalizedR_Mean"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedR_Variance"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedR_Std_dev"] <- apply(EmbAxisblot$R[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
-
-# Left
-PalData[["SCDblotsummary"]][,"NormalizedL_Mean"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedL_Variance"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {var(x, na.rm=TRUE)})
-PalData[["SCDblotsummary"]][,"NormalizedL_Std_dev"] <- apply(EmbAxisblot$L[-c(1,2)], 1, function(x) {sd(x, na.rm=TRUE)})
-
-
-# Rank pal-1 data by Standard deviation (Method 1)
-PalData[["Rankblotsummary"]] <- PalData[["SCDblotsummary"]][order(PalData$SCDblotsummary$NormalizedZ_Std_dev, na.last = TRUE, decreasing = TRUE) ,]
 
 # Set lower cutoff for mean blot value
 PalData[["SCDblot_cutoff"]] <- subset(PalData[["SCDblotsummary"]], (NormalizedZ_Mean > 100))
-
-# remove infinite normalized mean values
-PalData[["SCDblot_cutoff"]] <- subset(PalData[["SCDblot_cutoff"]], !(is.infinite(Normalized1_Mean) | is.infinite(Normalized2_Mean)))
 
 # Compute linear regression
 lm.reg <- lm(PalData[["SCDblot_cutoff"]]$Std_dev ~ PalData[["SCDblot_cutoff"]]$Mean)
