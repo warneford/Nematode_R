@@ -1,5 +1,11 @@
   #Script to analyze Pal-1 blotdata
 
+
+# load functions
+source('~/Nematode_R/DFtimepts.R')
+source('~/Nematode_R/Plotcell.R')
+source('~/Nematode_R/Selectcell.R')
+
 # Import SCD data
 source("ImportSCD.R")
 
@@ -12,7 +18,7 @@ source("trimmingSCD.R")
 # Compute Statistics
 source("SCD_statistics.R")
 
-# load functions
-source('~/Nematode_R/DFtimepts.R')
-source('~/Nematode_R/Plotcell.R')
+# Screen cells for high gene expression
+source("Cell_Timeline.R")
+
 

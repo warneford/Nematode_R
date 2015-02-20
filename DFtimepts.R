@@ -2,7 +2,7 @@
 # To omit calculation of left most label columns (e.g. "Cell") specify number of columns to ignore, default is 1.
 # IDcol specifies which column holds the cell ID information, default is 1.
 
-cellDFtimepts <- function(df, omit = 2, IDcol = 1, Timecol = 2) {
+cellDFsummary <- function(df, omit = 2, IDcol = 1, Timecol = 2) {
 
 # initialize output file
 Output <- data.frame(
