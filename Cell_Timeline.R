@@ -1,9 +1,5 @@
 # Produce cell aggregated expression data plotted by chronological order.
 
-# Group SCD data by embryo orientation
-EmbAxisData <- lapply(EmbOrientationRL, function(x)  {
-  PalData$SCD_Data[EmbAxisList[[x]]] })
-  names(EmbAxisData) <- EmbOrientationRL
 
 # generate list of cell names
 CellID <- levels(PalData$SCD_blot$cell)
@@ -16,7 +12,6 @@ PalData[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL,
        function(df) { Znorm <- (33-df$zraw)*Zcorr + 1
         df$blot*Znorm})))})
         
-      names(PalData$EmbOr_NormalizedZ_blot) <- EmbOrientationRL
 
 # Combine L and R Z-normalized blot data 
 PalData$EmbOr_NormalizedZ_blot$Both <- cbind(PalData$EmbOr_NormalizedZ_blot$R, PalData$EmbOr_NormalizedZ_blot$L[-c(1,2)])
@@ -29,7 +24,7 @@ names(PalData$cellblot) <- EmbOrientationRLB
 
 
 # summary of cell averaged blot values across all replicates 
-PalData$AverageCellblot <- lapply(PalData$cellblot, cellDFtimepts)
+PalData$AverageCellblot <- lapply(PalData$cellblot, cellDFsummary)
 names(PalData$AverageCellblot) <- EmbOrientationRLB
 
 # Subset for cells expressing gene at early time points
@@ -49,30 +44,16 @@ VarcellSub <- Selectcell(Varcells$Both, PalData$HiAverageCellblot$Both)
 VarcellSub$IDn <- factor(VarcellSub$ID, levels=VarcellSub$ID[order(VarcellSub$Mean)], ordered=TRUE)
 
 
-
-
 # Plots all cells Mean and CV values
 library(ggplot2)
-ggplot(VarcellSub, aes(x = ID, y=value, colour = Variable)) + 
+P1 <- ggplot(VarcellSub, aes(x = ID, y=value, colour = Variable)) + 
   geom_point(aes(y=Mean, col="Mean")) +
   geom_point(aes(y = CV, col = "CV")) 
-  
+P1
 
-ggplot(VarcellSub[40:43 ,]) +  
+P2 <- ggplot(VarcellSub) +  
   geom_errorbar(mapping=aes(x=IDn, ymin=Mean-SD, ymax=Mean+SD), width=0.2, size=1, colour="red") +
   geom_point(mapping=aes(x=IDn, y=Mean), size=4, shape=21, fill="white") +
   geom_point(aes(x=IDn, y = CV, col = "CV"), colour = "blue") +
   ggtitle("Mean Gene Expression versus Cell Identity")
 
-
-Plotcell("ABplpapapp", PalData$EmbOr_NormalizedZ_blot$Both)
-
-
-# Plots cell expression over lifespan
-library(ggplot2)
-  ggplot(foo, aes(x = Time, ymin=Mean-SD, ymax=Mean+SD)) + 
-  geom_pointrange(aes(y = Mean, col = "Mean")) +
-  geom_point(aes(y = CV, col = "CV")) +
-  ggtitle(paste(foo$ID[[1]]," gene expression over cell lifespan")) +
-  scale_color_discrete(name="Legend") +
-  scale_y_continuous(limits=c(0, 2))

@@ -2,16 +2,13 @@
 # Takes single argument of cell name in character form 
 # and dataframe of normalized blot data to draw from.
 # namecol specifies how many columns at left are labels and should be excluded from calculations
-Plotcell <- function(CellID, df, namecol = 2) {
+Plotcell <- function(CellID, df = PalData$EmbOr_NormalizedZ_blot$Both, namecol = 2) {
   
-# converts cell name to list for Selectcell.R
-
-
 # extracts relevant rows from data frame 
 foo <- Selectcell(CellID, df)
 
 # compute summary statistics for each timepoint
-foo2 <- cellDFtimepts(foo, omit = 2, IDcol = 1, Timecol = 2)
+foo2 <- cellDFsummary(foo, omit = 2, IDcol = 1, Timecol = 2)
 
 # generates plot of cell data
 library(ggplot2)

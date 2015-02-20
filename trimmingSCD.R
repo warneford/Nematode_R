@@ -33,7 +33,7 @@ PalData[["NormalizedZ_blot"]] <-  cbind(PalData[["SCD_Data"]][[1]][,c(1,2)], as.
   df$blot*Znorm})))
 
 # normalizes blot values in each experiment to average gweight values (Method 1)
-PalData[["Normalized1_blot"]] <- PalData[["SCD_blot"]][, -c(1,2)]/(PalData[["gweight"]][, -c(1,2)]/PalData[["Mean_gweight"]][, -c(1,2)])
+PalData[["Normalized1_blot"]] <- cbind(PalData$SCD_blot[,c(1,2)], PalData[["SCD_blot"]][, -c(1,2)]/(PalData[["gweight"]][, -c(1,2)]/PalData[["Mean_gweight"]][, -c(1,2)]))
 
 # normalizes blot values in each experiment to average gweight values and cell volume (Method 2)
-PalData[["Normalized2_blot"]] <- PalData[["SCD_blot"]][, -c(1,2)]/(PalData[["Normalized_gweight"]][, -c(1,2)]/PalData[["Mean_normalized_gweight"]][, -c(1,2)])
+PalData[["Normalized2_blot"]] <- cbind(PalData$SCD_blot[,c(1,2)], PalData[["SCD_blot"]][, -c(1,2)]/(PalData[["Normalized_gweight"]][, -c(1,2)]/PalData[["Mean_normalized_gweight"]][, -c(1,2)]))
