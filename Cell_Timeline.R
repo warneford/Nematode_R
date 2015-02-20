@@ -57,4 +57,7 @@ P2 <- ggplot(VarcellSub) +
   geom_point(aes(x=IDn, y = CV, col = "CV"), colour = "blue") +
   ggtitle("Mean Gene Expression versus Cell Identity")
 
-Plotcell("ABprapppapa")
+# plots cell ABprapppapa reporter expression over cell lifetime
+Plotcell("ABpra")
+
+
