@@ -39,8 +39,3 @@ lm.reg <- lm(PalData[["SCDblot_cutoff"]]$Std_dev ~ PalData[["SCDblot_cutoff"]]$M
 lm.norm1 <- lm(PalData[["SCDblot_cutoff"]]$Normalized1_Std_dev ~ PalData[["SCDblot_cutoff"]]$Normalized1_Mean)
 lm.norm2 <- lm(PalData[["SCDblot_cutoff"]]$Normalized2_Std_dev ~ PalData[["SCDblot_cutoff"]]$Normalized2_Mean)
 lm.normZ <- lm(PalData[["SCDblot_cutoff"]]$NormalizedZ_Std_dev ~ PalData[["SCDblot_cutoff"]]$NormalizedZ_Mean)
-lm.normR <- lm(PalData[["SCDblot_cutoff"]]$NormalizedR_Std_dev ~ PalData[["SCDblot_cutoff"]]$NormalizedR_Mean)
-lm.normL <- lm(PalData[["SCDblot_cutoff"]]$NormalizedL_Std_dev ~ PalData[["SCDblot_cutoff"]]$NormalizedL_Mean)
-
-# catch errors
-errorcases <- subset(PalData[["SCDblot_cutoff"]], is.na(Normalized1_Variance) & (!is.na(Variance)))

@@ -1,15 +1,22 @@
-# Function to plot expression data timepoints for specific cell ("AB", "ABp", "ABa" etc) 
-# drawing from normalized blot dataframe.
-# namecol specifies how many columns at left are labels
-Plotcell <-function(Cell_name, blotdf, namecol = 1) {
+# Function to plot expression of cell over course of its lifespan
+# Takes single argument of cell name in character form 
+# and dataframe of normalized blot data to draw from.
+# namecol specifies how many columns at left are labels and should be excluded from calculations
+Plotcell <- function(CellID, df, namecol = 2) {
+  
+# converts cell name to list for Selectcell.R
 
 
-# Pulls out all timepoints from blot data frame for desired Cell
-sample_blot <-blotdf[blotdf$Cell == Cell_name ,]
+# extracts relevant rows from data frame 
+foo <- Selectcell(CellID, df)
 
-# computes summary statistics for each time point of the cell of interest
-Sample_out <- cellDFtimepts(sample_blot, omit = namecol)
+# compute summary statistics for each timepoint
+foo2 <- cellDFtimepts(foo, omit = 2, IDcol = 1, Timecol = 2)
 
-return(Sample_out)}
-
-
+# generates plot of cell data
+library(ggplot2)
+ggplot(foo2, aes(x = Time, ymin=Mean-SD, ymax=Mean+SD)) + 
+  geom_pointrange(aes(y = Mean, col = "Mean")) +
+  geom_point(aes(y = CV, col = "CV")) +
+  ggtitle(paste(foo2$ID[1]," gene expression over cell lifespan")) +
+  scale_color_discrete(name="Legend") }

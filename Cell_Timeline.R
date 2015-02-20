@@ -12,7 +12,7 @@ CellID <- levels(PalData$SCD_blot$cell)
   Zcorr = 0.027 # Z plane linear normalization factor
  
 PalData[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL, 
-       function(lst) {cbind(Cell = PalData$SCD_blot$cell, Time = PalData$SCD_blot$cellTime, data.frame(lapply(EmbAxisData[[lst]], 
+       function(lst) {cbind(ID = PalData$SCD_blot$cell, Time = PalData$SCD_blot$cellTime, data.frame(lapply(EmbAxisData[[lst]], 
        function(df) { Znorm <- (33-df$zraw)*Zcorr + 1
         df$blot*Znorm})))})
         
@@ -24,18 +24,55 @@ EmbOrientationRLB <- c(EmbOrientationRL, "Both")
 
 
 # Collapse Z normalized blot data by cell identity.
-PalData$cellblot <- lapply(PalData$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1)], list(Cell = PalData$SCD_blot$cell), mean, na.action = na.exclude)})
+PalData$cellblot <- lapply(PalData$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = PalData$SCD_blot$cell), mean, na.action = na.exclude)})
 names(PalData$cellblot) <- EmbOrientationRLB
 
 
 # summary of cell averaged blot values across all replicates 
 PalData$AverageCellblot <- lapply(PalData$cellblot, cellDFtimepts)
-View(PalData$AverageCellblot$Both)
+names(PalData$AverageCellblot) <- EmbOrientationRLB
+
+# Subset for cells expressing gene at early time points
+PalData$HiAverageCellblot <- lapply(PalData$AverageCellblot, function(df) {subset(df, Mean > 50 & Time < 300)})
+
+# Sort in ascending order of expression
+PalData$HiAverageCellblot <- lapply(PalData$HiAverageCellblot, function(df) { df[order(df$Mean) ,] })
 
 # List cells with Coefficient of variation of blot values > 1
-Varcells <- lapply(PalData$AverageCellblot, function(df) {df$ID[df$CV > 1 & is.na(df$CV) == FALSE & df$Mean > 50]})
+Varcells <- lapply(PalData$HiAverageCellblot, function(df) {df$ID[df$CV > 1 & (is.na(df$CV) == FALSE)]})
 
+
+# Plot mean and CV of variable cells
+VarcellSub <- Selectcell(Varcells$Both, PalData$HiAverageCellblot$Both)
+
+# Reorder factors of cell names in ascending Mean blot order
+VarcellSub$IDn <- factor(VarcellSub$ID, levels=VarcellSub$ID[order(VarcellSub$Mean)], ordered=TRUE)
+
+
+
+
+# Plots all cells Mean and CV values
 library(ggplot2)
-ggplot(PalData$AverageCellblot$R, aes(x = ID, y = value, color = variable)) + 
-  geom_point(aes(y = Mean, col = "Mean")) + 
-  geom_point(aes(y = CV, col = "CV"))
+ggplot(VarcellSub, aes(x = ID, y=value, colour = Variable)) + 
+  geom_point(aes(y=Mean, col="Mean")) +
+  geom_point(aes(y = CV, col = "CV")) 
+  
+
+ggplot(VarcellSub[40:43 ,]) +  
+  geom_errorbar(mapping=aes(x=IDn, ymin=Mean-SD, ymax=Mean+SD), width=0.2, size=1, colour="red") +
+  geom_point(mapping=aes(x=IDn, y=Mean), size=4, shape=21, fill="white") +
+  geom_point(aes(x=IDn, y = CV, col = "CV"), colour = "blue") +
+  ggtitle("Mean Gene Expression versus Cell Identity")
+
+
+Plotcell("ABplpapapp", PalData$EmbOr_NormalizedZ_blot$Both)
+
+
+# Plots cell expression over lifespan
+library(ggplot2)
+  ggplot(foo, aes(x = Time, ymin=Mean-SD, ymax=Mean+SD)) + 
+  geom_pointrange(aes(y = Mean, col = "Mean")) +
+  geom_point(aes(y = CV, col = "CV")) +
+  ggtitle(paste(foo$ID[[1]]," gene expression over cell lifespan")) +
+  scale_color_discrete(name="Legend") +
+  scale_y_continuous(limits=c(0, 2))
