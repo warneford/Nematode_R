@@ -31,14 +31,11 @@ names(PalData$cellblot) <- EmbOrientationRLB
 # summary of cell averaged blot values across all replicates 
 PalData$AverageCellblot <- lapply(PalData$cellblot, cellDFtimepts)
 View(PalData$AverageCellblot$Both)
+
 # List cells with Coefficient of variation of blot values > 1
 Varcells <- lapply(PalData$AverageCellblot, function(df) {df$ID[df$CV > 1 & is.na(df$CV) == FALSE & df$Mean > 50]})
-Varcells
 
-View(PalData$EmbOr_NormalizedZ_blot$R)
-foo <- Plotcell("Eplp", PalData$EmbOr_NormalizedZ_blot$R, namecol = 2)
 library(ggplot2)
-ggplot(foo, aes(x=Time, y=Mean, colour="blue")) + 
-  geom_errorbar(aes(ymin=Mean-SD, ymax=Mean+SD), width=.1) +
-  geom_line() +
-  geom_point()
+ggplot(PalData$AverageCellblot$R, aes(x = ID, y = value, color = variable)) + 
+  geom_point(aes(y = Mean, col = "Mean")) + 
+  geom_point(aes(y = CV, col = "CV"))
