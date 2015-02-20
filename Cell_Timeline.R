@@ -46,8 +46,8 @@ VarcellSub$IDn <- factor(VarcellSub$ID, levels=VarcellSub$ID[order(VarcellSub$Me
 
 # Plots all cells Mean and CV values
 library(ggplot2)
-P1 <- ggplot(VarcellSub, aes(x = ID, y=value, colour = Variable)) + 
-  geom_point(aes(y=Mean, col="Mean")) +
+P1 <- ggplot(VarcellSub[10:15 ,], aes(x = IDn, y=value, colour = Variable)) + 
+  # geom_point(aes(y=Mean, col="Mean")) +
   geom_point(aes(y = CV, col = "CV")) 
 P1
 
@@ -57,3 +57,4 @@ P2 <- ggplot(VarcellSub) +
   geom_point(aes(x=IDn, y = CV, col = "CV"), colour = "blue") +
   ggtitle("Mean Gene Expression versus Cell Identity")
 
+Plotcell("ABprapppapa")
