@@ -59,6 +59,7 @@ P2 <- ggplot(VarcellSub) +
 
 # plots cell ABprapppapa reporter expression over cell lifetime
 Plotcell("ABarppa")
-Varcells$L
+
+
 
 

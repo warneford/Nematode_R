@@ -27,7 +27,7 @@ segments(foo2$Time, foo2$Mean-foo2$SD,foo2$Time, foo2$Mean+foo2$SD)
 segments(foo2$Time-epsilon, foo2$Mean-foo2$SD,foo2$Time+epsilon, foo2$Mean-foo2$SD)
 segments(foo2$Time-epsilon, foo2$Mean+foo2$SD,foo2$Time+epsilon, foo2$Mean+foo2$SD)
 mtext("Mean Expression",side=2,line=2,col="blue")
-title(paste("Cell ", CellID," Pal-1 expression over lifespan"))
+title(paste("Cell ", CellID, " Pal-1 expression over lifespan"))
 
 par(new=T)
 plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=2,col="red")
