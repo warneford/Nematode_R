@@ -33,14 +33,10 @@ PalData$SortAvCellBlot <- lapply(PalData$AverageCellblot, function(x) {Sortblot(
 # Reorder factors of cell names in ascending Mean blot order
 PalData$SortAvCellBlot <- lapply(PalData$SortAvCellBlot, function(df) {cbind(ID = factor(df$ID, levels=df$ID[order(df$Mean)], ordered = TRUE), df[-c(1)])})
 
-
 # Plots dual ordinate plot of Averaged blot data (Mean and CV)
-PlotAllCells(LoCell = 11, HiCell = 30, df = PalData$SortAvCellBlot$Both)
+PlotAllCells(LoCell = 1, HiCell = 30, df = PalData$SortAvCellBlot$Both)
 
 # plots specific cell reporter expression over cell lifetime
-Plotcell("Dpppa")
-
-View(PalData$SortAvCellBlot$Both)
-
+Plotcell("E", df =  PalData$EmbOr_NormalizedZ_blot$R)
 
 
