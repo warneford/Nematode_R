@@ -1,4 +1,4 @@
-  #Script to analyze Pal-1 blotdata
+#Script to analyze Pal-1 blotdata
 
 
 # load functions

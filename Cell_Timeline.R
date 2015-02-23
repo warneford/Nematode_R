@@ -27,38 +27,42 @@ names(PalData$cellblot) <- EmbOrientationRLB
 PalData$AverageCellblot <- lapply(PalData$cellblot, cellDFsummary)
 names(PalData$AverageCellblot) <- EmbOrientationRLB
 
-# Subset for cells expressing gene at early time points
-PalData$HiAverageCellblot <- lapply(PalData$AverageCellblot, function(df) {subset(df, Mean > 50 & Time < 300)})
 
-# Sort in ascending order of expression
-PalData$HiAverageCellblot <- lapply(PalData$HiAverageCellblot, function(df) { df[order(df$Mean) ,] })
-
-# List cells with Coefficient of variation of blot values > 1
-Varcells <- lapply(PalData$HiAverageCellblot, function(df) {df$ID[df$CV > 1 & (is.na(df$CV) == FALSE)]})
-
-
-# Plot mean and CV of variable cells
-VarcellSub <- Selectcell(Varcells$Both, PalData$HiAverageCellblot$Both)
+# Subset Averaged blot data for highly-expressing cells and larger CV values
+PalData$SortAvCellBlot <- lapply(PalData$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 50, LoCV = 0.5,TimeMax = 500)})
 
 # Reorder factors of cell names in ascending Mean blot order
-VarcellSub$IDn <- factor(VarcellSub$ID, levels=VarcellSub$ID[order(VarcellSub$Mean)], ordered=TRUE)
+PalData$SortAvCellBlot <- lapply(PalData$SortAvCellBlot, function(df) {cbind(ID = factor(df$ID, levels=df$ID[order(df$Mean)], ordered = TRUE), df[-c(1)])})
 
-
+View(PalData$SortAvCellBlot$Both)
 # Plots all cells Mean and CV values
 library(ggplot2)
-P1 <- ggplot(VarcellSub[10:15 ,], aes(x = IDn, y=value, colour = Variable)) + 
-  # geom_point(aes(y=Mean, col="Mean")) +
+P1 <- ggplot(PalData$SortAvCellBlot$R, aes(x = ID, y=value, colour = Variable)) + 
+  geom_point(aes(y=Mean, col="Mean")) +
   geom_point(aes(y = CV, col = "CV")) 
-P1
 
-P2 <- ggplot(VarcellSub) +  
-  geom_errorbar(mapping=aes(x=IDn, ymin=Mean-SD, ymax=Mean+SD), width=0.2, size=1, colour="red") +
-  geom_point(mapping=aes(x=IDn, y=Mean), size=4, shape=21, fill="white") +
-  geom_point(aes(x=IDn, y = CV, col = "CV"), colour = "blue") +
-  ggtitle("Mean Gene Expression versus Cell Identity")
 
-# plots cell ABprapppapa reporter expression over cell lifetime
-Plotcell("ABarppa")
+# Plots dual ordinate plot of Averaged blot data (Mean and CV)
+
+# Select Indices of Cells to plot
+PlotRange <- c(43:53)
+
+par(mar=c(5,4,4,4))
+plot(x = PlotRange, y = PalData$SortAvCellBlot$Both$Mean[PlotRange], xlab="", ylab="",
+     ylim=c(0, max(PalData$SortAvCellBlot$Both$Mean[PlotRange])), pch=20, col ="blue", axes=FALSE )
+axis(2)
+axis(1, at=seq_along(PalData$SortAvCellBlot$Both$Mean),labels=as.character(PalData$SortAvCellBlot$Both$ID), las=2)
+mtext("Mean Expression",side=2,line=2,col="blue")
+title(paste("Cells with high Pal-1 expression"))
+
+par(new=T)
+plot(1:length(PalData$SortAvCellBlot$Both$Mean[PlotRange]), PalData$SortAvCellBlot$Both$CV[PlotRange],axes=F,xlab="",ylab="",pch=23, bg = "red", col="red")
+axis(side=4)
+mtext("CV",side=4,line=2,col="red")
+
+
+# plots cell Eal reporter expression over cell lifetime
+Plotcell("Dpppa")
 
 
 
