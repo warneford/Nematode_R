@@ -35,10 +35,10 @@ PalData$SortAvCellBlot <- lapply(PalData$SortAvCellBlot, function(df) {cbind(ID 
 
 
 # Plots dual ordinate plot of Averaged blot data (Mean and CV)
-PlotAllCells(LoCell = 50, HiCell = 66, df = PalData$SortAvCellBlot$Both)
+PlotAllCells(LoCell = 11, HiCell = 30, df = PalData$SortAvCellBlot$Both)
 
 # plots specific cell reporter expression over cell lifetime
-Plotcell("ABplp")
+Plotcell("Dpppa")
 
 View(PalData$SortAvCellBlot$Both)
 
