@@ -11,7 +11,7 @@ foo <- Selectcell(CellID, df)
 foo2 <- cellDFsummary(foo, omit = 2, IDcol = 1, Timecol = 2)
 
 par(mar=c(5,4,4,4))
-plot(x =foo2$Time, y = foo2$Mean, xlab="Time",ylab="",pch=5, col="blue", 
+plot(x =foo2$Time, y = foo2$Mean, xlab="Time",ylab="",pch=20, col="blue", 
      ylim=c(0, max(foo2$Mean + foo2$SD)))
 epsilon = 0.3
 segments(foo2$Time, foo2$Mean-foo2$SD,foo2$Time, foo2$Mean+foo2$SD)
@@ -21,6 +21,6 @@ mtext("Mean Expression",side=2,line=2,col="blue")
 title(paste("Cell ", CellID, " Pal-1 expression over lifespan"))
 
 par(new=T)
-plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=2,col="red")
+plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="red",col="red")
 axis(side=4)
 mtext("CV",side=4,line=2,col="red")}
