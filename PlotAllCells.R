@@ -4,7 +4,7 @@
 PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df) {
 
 PlotRange <- c(LoCell:HiCell)
-par(mar=c(5,4,4,4))
+par(mar=c(6,4,4,4))
 plot(x = PlotRange, y = df$Mean[PlotRange], xlab="", ylab="",
      ylim=c(0, max(df$Mean[PlotRange])), pch=20, col ="blue", axes=FALSE )
 axis(2)
@@ -13,6 +13,7 @@ mtext("Mean Expression",side=2,line=2,col="blue")
 title(paste("Cells with high Pal-1 expression"))
 
 par(new=T)
-plot(1:length(df$Mean[PlotRange]), df$CV[PlotRange],axes=F,xlab="",ylab="",pch=23, bg = "red", col="red")
+plot(1:length(df$Mean[PlotRange]), df$CV[PlotRange],axes=F,xlab="",ylab="",pch=23, bg = "red", 
+     ylim=c(0, 1), col="red")
 axis(side=4)
 mtext("CV",side=4,line=2,col="red")}

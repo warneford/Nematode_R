@@ -21,6 +21,6 @@ mtext("Mean Expression",side=2,line=2,col="blue")
 title(paste("Cell ", CellID, " Pal-1 expression over lifespan"))
 
 par(new=T)
-plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="red",col="red", ylim=c(0,3))
+plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="red",col="red", ylim=c(0,1))
 axis(side=4)
 mtext("CV",side=4,line=2,col="red")}

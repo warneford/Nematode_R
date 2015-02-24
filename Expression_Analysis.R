@@ -22,9 +22,13 @@ source("SCD_statistics.R")
 source("Cell_Timeline.R")
 
 # Plots dual ordinate plot of Averaged blot data (Mean and CV)
-PlotAllCells(LoCell = 1, HiCell = 30, df = Data$SortAvCellBlot$Both)
+PlotAllCells(LoCell = 130, HiCell = 140 , df = Data$SortAvCellBlot$Both)
+# Sort chronologically, sort by CV, sort by lineage
+View(Data$SortAvCellBlot$Both)
 
 # plots specific cell reporter expression over cell lifetime
-Plotcell("E", df =  Data$EmbOr_NormalizedZ_blot$R)
+Plotcell("D", df =  Data$EmbOr_NormalizedZ_blot$Both)
+# Modify plotcell to show ancestor expression of Pal-1
 
-
+# find out where C lineage 
+Selectcell("Caa", Data$AverageCellblot$Both)
