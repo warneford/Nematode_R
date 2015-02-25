@@ -1,7 +1,24 @@
 # Function to plot Mean and CV data for cells that highly express reporter gene.
 # LoCell and HiCell indicate lower and upper bound of cells to plot, by default PlotAllCells
-# will plot all cells. LoCell must be 1 or greater
-PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df) {
+# will plot all cells. LoCell must be 1 or greater. 
+# Sort <- c("blot", "time", "CV"). This sorts the cells either by increasing mean blot,
+# chronological order, or by increasing coefficient of variation
+PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df, sort = "blot" ) {
+
+  
+if (sort == "blot") # sort cells in ascending mean blot value and reorder cell name factors
+  { df <- df[order(df$Mean) ,]  
+    df <- cbind(ID = factor(df$ID, levels=df$ID[order(df$Mean)], ordered = TRUE), df[-c(1)])
+    View(df)
+} else if (sort == "time") # sort cells chronologically and reorder cell name factors
+  { df <- df[order(df$Time) ,]  
+    df$ID <- factor(df$ID, levels=df$ID[order(df$Time)], ordered = TRUE)
+    View(df)
+} else if (sort == "CV") # sort cells chronologically and reorder cell name factors
+  { df <- df[order(df$CV) ,]  
+    df <- cbind(ID = factor(df$ID, levels=df$ID[order(df$CV)], ordered = TRUE), df[-c(1)])
+    View(df)  
+}
 
 PlotRange <- c(LoCell:HiCell)
 par(mar=c(6,4,4,4))

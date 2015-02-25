@@ -22,18 +22,13 @@ EmbOrientationRLB <- c(EmbOrientationRL, "Both")
 Data$cellblot <- lapply(Data$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = Data$SCD_blot$cell), mean, na.action = na.exclude)})
 
 # Add first time point to each cell average entry
-CellStartTimes <- cbind(ID = CellID, Time = lapply(CellID, function(Cell) {Data$EmbOr_NormalizedZ_blot$Both$Time[Data$EmbOr_NormalizedZ_blot$Both$ID %in% Cell][1]}))
-Data$cellblot <- lapply(Data$cellblot, function(df) {cbind(df[1], CellStartTimes[[2], df[-c(1)])})
+CellStartTimes <- unlist(lapply(CellID, function(Cell) {Data$EmbOr_NormalizedZ_blot$Both$Time[Data$EmbOr_NormalizedZ_blot$Both$ID %in% Cell][1]}))
+Data$cellblot <- lapply(Data$cellblot, function(df) {cbind(df[1], Time = CellStartTimes, df[-c(1)])})
 names(Data$cellblot) <- EmbOrientationRLB
-head(str(Data$cellblot$R))
-CellStartTimes$Time
+
 # summary of cell averaged blot values across all replicates 
 Data$AverageCellblot <- lapply(Data$cellblot, cellDFsummary)
 names(Data$AverageCellblot) <- EmbOrientationRLB
 
-View(Data$AverageCellblot$R)
 # Subset Averaged blot data for highly-expressing cells and larger CV values
-Data$SortAvCellBlot <- lapply(Data$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 50, LoCV = 0, HiCV = 5)})
-
-# Reorder factors of cell names in ascending Mean blot order
-Data$SortAvCellBlot <- lapply(Data$SortAvCellBlot, function(df) {cbind(ID = factor(df$ID, levels=df$ID[order(df$Mean)], ordered = TRUE), df[-c(1)])})
+Data$SortAvCellBlot <- lapply(Data$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 100, LoCV = 0, HiCV = 5)})
