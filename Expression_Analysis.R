@@ -1,6 +1,8 @@
 #Script to analyze Reporter fluorescence data
 
 # Clear workspace
+rm(list=ls())
+
 # load functions
 source('~/Nematode_R/DFtimepts.R')
 source('~/Nematode_R/Plotcell.R')
@@ -16,13 +18,13 @@ source('~/Nematode_R/Blotscale.R')
 source('~/Nematode_R/BlotApply.R')
 source('~/Nematode_R/Zscale.R')
 
-# Specify raw data directory
-Rawdir <- "RW10890_new"
+# Specify raw data source directory
+Rawdir <- "Combined RW10890"
 
 # Import SCD data
 Data <- ImportSCD(Rawdir)
 
-# Generate annotation file for specific SCD data with auxillary information for desired worm strain
+# Generate annotation file for SCD data with auxillary information for desired worm strain
 RepAuxInfo <- RepAuxfiles("RW10890", Rawdir)
 
 # Trim data
@@ -35,7 +37,8 @@ source("SCD_statistics.R")
 source("Cell_Timeline.R")
 
 # Plots dual ordinate plot of Averaged blot data (Mean and CV)
-names <- PlotAllCells(LoCell = 1, HiCell = , df = Data$SortAvCellBlot$Both, sort = "blot",outnames = TRUE)
+PlotAllCells(LoCell = 1, HiCell = , df = Data$SortAvCellBlot$Both, sort = "CV",outnames = FALSE)
+names <- PlotAllCells(LoCell = 1, HiCell = 35, df = Data$SortAvCellBlot$Both, sort = "CV",outnames = TRUE)
 names <- as.character(names)
 
 # plots specific cell reporter expression over cell lifetime
@@ -45,7 +48,7 @@ Plotcell("", df =  Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)
 Plotcell("Cpppap", df =  Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)
 
 # Plot lineages of top 20 expressing cells
-pdf(onefile = TRUE, file = "New RW10890 Pal-1 Expression.pdf")
+pdf(onefile = TRUE, file = "Combined RW10890 Pal-1 Expression_lowCV.pdf" )
 for (i in 1:length(names))
 {Plotcell(names[i], df = Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)}
 dev.off()

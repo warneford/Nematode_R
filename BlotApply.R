@@ -3,9 +3,9 @@
 #
 #
 BlotApply <- function(df, scale_df) {
- Emb <- names(df)[-c(1,2)]
- 
+ Emb <- names(df)[-c(1)]
+ outdf <- data.frame(Cell = df[[1]])
  for (i in 1:length(Emb)) {
-   df[,Emb[i]] <- df[,Emb[i]]/scale_df[scale_df[,1] %in% Emb[i],2]
+   outdf[,Emb[i]] <- df[,Emb[i]]/scale_df[scale_df[,1] %in% Emb[i],2]
  }
- return(df) }
+ return(outdf) }
