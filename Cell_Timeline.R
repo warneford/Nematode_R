@@ -24,9 +24,6 @@ Data$NormZblot <- lapply(EmbOrientationRLB, function(Or) {BlotApply(Data$EmbOr_N
 names(Data$NormZblot) <- EmbOrientationRLB
 rm(Blotscaledf)
 
-View(Data$NormZblot$Both)
-
-
 # Collapse Z-normalized/blot-normalized blot data by cell identity.
 Data$cellblot2 <- lapply(Data$NormZblot, function(df) {aggregate(df[-c(1, 2)], list(Cell = Data$SCD_blot$cell), mean, na.action = na.exclude)})
 
