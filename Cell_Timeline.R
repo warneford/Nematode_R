@@ -11,16 +11,19 @@ Data[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL,
        function(df) { Znorm <- (33-df$zraw)*Zcorr + 1
         df$blot*Znorm})))}) 
         rm(Zcorr)
-
-names(Data$EmbOr_NormalizedZ_blot) <- EmbOrientationRL
+        names(Data$EmbOr_NormalizedZ_blot) <- EmbOrientationRL
 
 # Combine L and R Z-normalized blot data 
 Data$EmbOr_NormalizedZ_blot$Both <- cbind(Data$EmbOr_NormalizedZ_blot$R, Data$EmbOr_NormalizedZ_blot$L[-c(1,2)])
 EmbOrientationRLB <- c(EmbOrientationRL, "Both")
 
+# Normalize embryo blot data by raw blot intensity, relative to reference embryo
+Blotscaledf <- Blotscale(Data$cellblot$Both)
+Data$NormZblot <- lapply(Data$EmbOr_NormalizedZ_blot, function(df) {BlotApply(df, Blotscaledf)})
 
 # Collapse Z normalized blot data by cell identity.
-Data$cellblot <- lapply(Data$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = Data$SCD_blot$cell), mean, na.action = na.exclude)})
+Data$cellblot <- lapply(Data$NormZblot, function(df) {aggregate(df[-c(1, 2)], list(Cell = Data$SCD_blot$cell), mean, na.action = na.exclude)})
+
 
 # Add first time point to each cell average entry
 CellStartTimes <- unlist(lapply(CellID, function(Cell) {Data$EmbOr_NormalizedZ_blot$Both$Time[Data$EmbOr_NormalizedZ_blot$Both$ID %in% Cell][1]}))
@@ -31,6 +34,8 @@ names(Data$cellblot) <- EmbOrientationRLB
 # summary of cell averaged blot values across all replicates 
 Data$AverageCellblot <- lapply(Data$cellblot, cellDFsummary)
 names(Data$AverageCellblot) <- EmbOrientationRLB
+
+
 
 # Subset Averaged blot data for highly-expressing cells and larger CV values
 Data$SortAvCellBlot <- lapply(Data$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 100, LoCV = 0,)})

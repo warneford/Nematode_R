@@ -1,6 +1,7 @@
 # Specify columns to remove from data
 drops <- c()
 Data[["SCD_Data"]] <- lapply (Data[["SCD_Data"]], function(x) {x[,!(names(x) %in% drops)]})
+rm(drops)
 
 # Find missing values and assign NA (where no x and y coordinates given | gweight = 0)
 Data[["SCD_Data"]] <- lapply(Data[["SCD_Data"]], function(df) {within(df, blot[x==0 & y==0 | gweight==0] <- NA)})
@@ -28,7 +29,7 @@ Data[["Mean_normalized_gweight"]] <- cbind(Data[["SCD_Data"]][[1]][,c(1,2)], as.
 
 # linearly normalizes blot values in each experiment to middle Z plane (Method Z)
 Zcorr = 0.027 # Z plane linear normalization factor
-Data[["NormalizedZ_blot"]] <-  cbind(Data[["SCD_Data"]][[1]][,c(1,2)], as.data.frame(lapply(Data[["SCD_Data"]], function(df) {
+Data[["NormalizedZ_blot"]] <-  cbind(Data[["SCD_blot"]][,c(1,2)], as.data.frame(lapply(Data[["SCD_Data"]], function(df) {
   Znorm <- (33-df$zraw)*Zcorr + 1
   df$blot*Znorm})))
 
