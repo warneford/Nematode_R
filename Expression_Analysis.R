@@ -17,7 +17,7 @@ source('~/Nematode_R/BlotApply.R')
 source('~/Nematode_R/Zscale.R')
 
 # Specify raw data directory
-Rawdir <- "RW10890_new"
+Rawdir <- "RW10890"
 
 # Import SCD data
 Data <- ImportSCD(Rawdir)

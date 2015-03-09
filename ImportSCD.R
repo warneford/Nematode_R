@@ -1,6 +1,6 @@
 # Script to import all SCD data from data directory
 ImportSCD <-function(Dir) 
-  {
+  {   
     SCDfiles <- list.files(Dir, pattern="^SCD.+\\.csv$")
     SCDfiles.path <- paste0(Dir, "/", SCDfiles)
   
