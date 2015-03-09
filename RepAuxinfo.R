@@ -1,9 +1,9 @@
 # Extracts and aggregates AuxInfo.csv files for desired reporter lineage from folder named "Raw_data"
-RepAuxfiles <- function(Lineage) {
+RepAuxfiles <- function(Lineage, dir = Rawdir) {
 foo <- paste0("^.+", Lineage, ".+AuxInfo.csv$")
 
-RepAuxfiles <- list.files("Raw_data", pattern=foo)
-RepAuxfiles.path <- paste0("Raw_data/", RepAuxfiles)
+RepAuxfiles <- list.files(dir, pattern=foo)
+RepAuxfiles.path <- paste0(dir, "/", RepAuxfiles)
 RepAux <- do.call("rbind", lapply(RepAuxfiles.path, read.csv, header=TRUE))
 RepAux <- data.frame(lapply(RepAux, as.character), stringsAsFactors=FALSE)
 
