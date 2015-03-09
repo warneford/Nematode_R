@@ -27,8 +27,11 @@ Data[["Normalized_gweight"]] <- cbind(Data[["SCD_Data"]][[1]][,c(1,2)], as.data.
 # calculate mean, normalized gweight values
 Data[["Mean_normalized_gweight"]] <- cbind(Data[["SCD_Data"]][[1]][,c(1,2)], as.data.frame(apply(Data[["Normalized_gweight"]][-c(1,2)], 1, function(x) {mean(x, na.rm=TRUE)})))
 
+
+# Generate Z normalization factor
+Zcorr <- OptimZ(Data$SCD_Data)
+
 # linearly normalizes blot values in each experiment to middle Z plane (Method Z)
-Zcorr = 0.027 # Z plane linear normalization factor
 Data[["NormalizedZ_blot"]] <-  cbind(Data[["SCD_blot"]][,c(1,2)], as.data.frame(lapply(Data[["SCD_Data"]], function(df) {
   Znorm <- (33-df$zraw)*Zcorr + 1
   df$blot*Znorm})))

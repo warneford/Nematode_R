@@ -18,4 +18,5 @@ EmbAxisList <- lapply(EmbOrientationRL, function(x)
 # Group SCD data by embryo orientation
 EmbAxisData <- lapply(EmbOrientationRL, function(x)  {
       Data$SCD_Data[EmbAxisList[[x]]] })
-      names(EmbAxisData) <- EmbOrientationRL
+
+names(EmbAxisData) <- EmbOrientationRL
