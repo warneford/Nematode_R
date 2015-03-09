@@ -24,22 +24,24 @@ Data$NormZblot <- lapply(EmbOrientationRLB, function(Or) {BlotApply(Data$EmbOr_N
 names(Data$NormZblot) <- EmbOrientationRLB
 rm(Blotscaledf)
 
+View(Data$NormZblot$Both)
+
+
 # Collapse Z-normalized/blot-normalized blot data by cell identity.
 Data$cellblot2 <- lapply(Data$NormZblot, function(df) {aggregate(df[-c(1, 2)], list(Cell = Data$SCD_blot$cell), mean, na.action = na.exclude)})
 
 # Add first time point to each cell average entry
 CellStartTimes <- unlist(lapply(CellID, function(Cell) {Data$EmbOr_NormalizedZ_blot$Both$Time[Data$EmbOr_NormalizedZ_blot$Both$ID %in% Cell][1]}))
 Data$cellblot2 <- lapply(Data$cellblot2, function(df) {cbind(df[1], Time = CellStartTimes, df[-c(1)])})
-rm(CellStartTimes, CellID)
 names(Data$cellblot2) <- EmbOrientationRLB
+
+rm(CellStartTimes, CellID)
 
 # summary of cell averaged blot values across all replicates 
 Data$AverageCellblot <- lapply(Data$cellblot2, cellDFsummary)
 names(Data$AverageCellblot) <- EmbOrientationRLB
 
 # Plot Mean versus SD of blot data to assess success of normalization method
-
-
 df <- Data$AverageCellblot$L
 temp <- lm(df$SD ~ df$Mean)
 library(ggplot2)
@@ -49,7 +51,8 @@ ggplot(df, aes(x=Mean, y=SD)) +
   geom_text(aes(x = max(df$Mean, na.rm = TRUE)*0.2, y = max(df$SD, na.rm = TRUE), 
                 label = paste("R^2 is ", format(summary(temp)$adj.r.squared, digits=4), "slope is", format(coef(temp)[2], digits = 3)))) +
   ggtitle("Z & Blot normalized (L Orientation) Mean Pal-1 Blot Values versus Standard Deviation") 
-  rm( df, temp)
+  
+rm( df, temp)
 
 # Subset Averaged blot data for highly-expressing cells and larger CV values
 Data$SortAvCellBlot <- lapply(Data$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 0, LoCV = 0, HiCV = 0.3)})

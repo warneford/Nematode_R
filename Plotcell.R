@@ -3,7 +3,7 @@
 # and dataframe of normalized blot data to draw from.
 # ancestors specifies whether to plot all previous cells in lineage
 # namecol specifies how many columns at left are labels and should be excluded from calculations
-Plotcell <- function(CellID, df = PalData$EmbOr_NormalizedZ_blot$Both, namecol = 2, ancestors = FALSE) {
+Plotcell <- function(CellID, df = Data$NormZblot$Both, namecol = 2, ancestors = FALSE) {
   
 # extracts relevant rows from data frame 
 if (ancestors == TRUE) {

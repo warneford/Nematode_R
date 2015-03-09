@@ -42,15 +42,15 @@ names <- PlotAllCells(LoCell = 1, HiCell = 35, df = Data$SortAvCellBlot$Both, so
 names <- as.character(names)
 
 # plots specific cell reporter expression over cell lifetime
-Plotcell("", df =  Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)
+Plotcell("Eal", df =  Data$NormZblot$Both, ancestors = TRUE)
 
 # plots entire lineage of reporter expression over time
-Plotcell("Cpppap", df =  Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)
+Plotcell("Cpppap", df =  Data$NormZblot$Both, ancestors = TRUE)
 
 # Plot lineages of top 20 expressing cells
 pdf(onefile = TRUE, file = "Combined RW10890 Pal-1 Expression_lowCV.pdf" )
 for (i in 1:length(names))
-{Plotcell(names[i], df = Data$EmbOr_NormalizedZ_blot$Both, ancestors = TRUE)}
+{Plotcell(names[i], df = Data$NormZblot$Both, ancestors = TRUE)}
 dev.off()
   rm(i, names, RepAuxInfo)
 
