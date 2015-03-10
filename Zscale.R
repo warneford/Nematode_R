@@ -16,7 +16,9 @@ for(i in CorrectionFactors){
 
 # Return optimal correction factor
 OptimCor <- CorrectionFactors[which.max(meanRs)]
-plot(CorrectionFactors,meanRs,xaxp = c(min(CorrectionFactors), max(CorrectionFactors), 100), main = "Correction factors versus Blot Covariance")
+plot(CorrectionFactors,meanRs,xaxp = c(min(CorrectionFactors), max(CorrectionFactors), 100),
+     main = "Correction factors versus Blot Covariance")
 abline(v=OptimCor,col="red")
+text(x = 0.15, y = max(meanRs)*0.8, format(paste0("Optimal Z correction factor is ", which.max(meanRs)),digits = 5))
 
 return(OptimCor)}

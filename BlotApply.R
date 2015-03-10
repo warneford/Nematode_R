@@ -4,9 +4,11 @@
 #
 BlotApply <- function(df, scale_df) {
  Emb <- names(df)[-c(1)]
-  for (i in 1:length(Emb)) {
+ CellTime <- df[[2]] 
+ 
+ for (i in 1:length(Emb)) {
     df[,Emb[i]] <- df[,Emb[i]]/scale_df[scale_df[,1] %in% Emb[i],2]
      }
- df[[2]] = Data$SCD_blot$cellTime
+ df[[2]] = CellTime
  
  return(df) }

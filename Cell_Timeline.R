@@ -10,23 +10,27 @@ EmbOrientationRLB <- c(EmbOrientationRL, "Both")
 # generate list of cell names
 CellID <- levels(listdf$SCD_blot$cell)
 
+# Generate Z normalization factor
+Zcorr <- OptimZ(listdf$SCD_Data)
+
+# Remove redundant SCD data
+listdf <- listdf[!(names(listdf) %in% "SCD_Data")]
+
 # linearly normalize embryo orientation-sorted blot values in each experiment to middle Z plane
 listdf[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL, 
        function(lst) {cbind(ID = listdf$SCD_blot$cell, Time = listdf$SCD_blot$cellTime, data.frame(lapply(Embdata[[lst]], 
        function(df) { Znorm <- (33-df$zraw)*Zcorr + 1
         df$blot*Znorm})))}) 
         names(listdf$EmbOr_NormalizedZ_blot) <- EmbOrientationRL
-        rm(Zcorr)
 
 # Combine L and R Z-normalized blot data 
 listdf$EmbOr_NormalizedZ_blot$Both <- cbind(listdf$EmbOr_NormalizedZ_blot$R, listdf$EmbOr_NormalizedZ_blot$L[-c(1,2)])
 
-
 # Collapse Z-normalized blot data by cell identity.
-listdf$cellblot <- lapply(listdf$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$cell), mean, na.action = na.exclude)})
+listdf$cellblot1 <- lapply(listdf$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$cell), mean, na.action = na.exclude)})
 
 # Normalize embryo blot data by raw blot intensity, relative to reference embryo
-Blotscaledf <- lapply(listdf$cellblot, Blotscale)
+Blotscaledf <- lapply(listdf$cellblot1, Blotscale)
 listdf$NormZblot <- lapply(EmbOrientationRLB, function(Or) {BlotApply(listdf$EmbOr_NormalizedZ_blot[[Or]], Blotscaledf[[Or]])})
 names(listdf$NormZblot) <- EmbOrientationRLB
 
@@ -38,24 +42,12 @@ CellStartTimes <- unlist(lapply(CellID, function(Cell) {listdf$EmbOr_NormalizedZ
 listdf$cellblot2 <- lapply(listdf$cellblot2, function(df) {cbind(df[1], Time = CellStartTimes, df[-c(1)])})
 names(listdf$cellblot2) <- EmbOrientationRLB
 
+# summary of cell averaged blot values across all replicates (Z normalization only)
+listdf$AverageCellblot1 <- lapply(listdf$cellblot1, cellDFsummary)
+names(listdf$AverageCellblot1) <- EmbOrientationRLB
 
-# summary of cell averaged blot values across all replicates 
-listdf$AverageCellblot <- lapply(listdf$cellblot2, cellDFsummary)
-names(listdf$AverageCellblot) <- EmbOrientationRLB
-
-# Plot Mean versus SD of blot data to assess success of normalization method
-df <- listdf$AverageCellblot$L
-temp <- lm(df$SD ~ df$Mean)
-library(ggplot2)
-ggplot(df, aes(x=Mean, y=SD)) +
-  geom_point() +
-  geom_smooth(method=lm, colour="red") +
-  geom_text(aes(x = max(df$Mean, na.rm = TRUE)*0.2, y = max(df$SD, na.rm = TRUE), 
-                label = paste("R^2 is ", format(summary(temp)$adj.r.squared, digits=4), "slope is", format(coef(temp)[2], digits = 3)))) +
-  ggtitle("Z & Blot normalized (L Orientation) Mean Pal-1 Blot Values versus Standard Deviation") 
-
-
-# Subset Averaged blot data for highly-expressing cells and larger CV values
-listdf$SortAvCellBlot <- lapply(listdf$AverageCellblot, function(x) {Sortblot(df = x, LoMean = 0, LoCV = 0, HiCV = 0.3)})
+# summary of cell averaged blot values across all replicates (Z + blot normalization)
+listdf$AverageCellblot2 <- lapply(listdf$cellblot2, cellDFsummary)
+names(listdf$AverageCellblot2) <- EmbOrientationRLB
 
 return(listdf)}
