@@ -1,9 +1,10 @@
 # Function to plot expression of cell over course of its lifespan
 # Takes single argument of cell name in character form 
 # and dataframe of normalized blot data to draw from.
+# sdf specifies source data structure from which df is drawn, used to pass annotations to plot options
 # ancestors specifies whether to plot all previous cells in lineage
 # namecol specifies how many columns at left are labels and should be excluded from calculations
-Plotcell <- function(CellID, df = EmbData_A$NormZblot$Both, namecol = 2, ancestors = FALSE) {
+Plotcell <- function(CellID, df = Data_A$NormZblot$Both,sdf = Data_A, namecol = 2, ancestors = FALSE) {
   
 # extracts relevant rows from data frame 
 if (ancestors == TRUE) {
@@ -31,7 +32,7 @@ mtext("Mean Expression",side=2,line=2)
 if (ancestors == TRUE) {plotid <- "lineage"
 } else {plotid <- "lifespan"}
 
-title(paste("Cell", CellID, "Pal-1 expression over", plotid))
+title(paste(sdf$Directory, "Cell", CellID, sdf$repID, "expression over", plotid))
 
 par(new=T)
 plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="orange",col="orange", ylim=c(0,1), cex = 0.5)

@@ -3,19 +3,16 @@
 # name of lineage to identify strain in filenames,
 # and directory containing Aux_info files
 
-GroupEmb <- function(listdf, lineage, directory) {
+GroupEmb <- function(listdf) {
   
   # Generate list of embryos grouped by axis
   # Enter desired axis groupings, "L" will extract all axis entries ending with "L"
   EmbOrientationRL <- c("R", "L") 
   
-  # Generate annotation file for SCD data with auxillary information for desired worm strain
-  Aux_info <- RepAuxfiles(lineage, directory)
-  
   
   EmbAxisList <- list()
   EmbAxisList <- lapply(EmbOrientationRL, function(x) 
-  {Aux_info[grep(paste0("^.+",x, "$"), Aux_info$axis), "name"]})
+  {listdf$Aux_info[grep(paste0("^.+",x, "$"), listdf$Aux_info$axis), "name"]})
   names(EmbAxisList) <- EmbOrientationRL
   
   # Group SCD data by embryo orientation

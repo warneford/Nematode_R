@@ -7,11 +7,16 @@ SCDprocess <- function(lineage = "RW10890", Rawdir) {
   listdf <- ImportSCD(Rawdir)
   
   # Trim data
-  listdf <- Trimming(listdf)
+  listdf <- Trimming(listdf, lineage, Rawdir)
   
   # Group Embryos by Orientation
-  groupdf <- GroupEmb(listdf, lineage, Rawdir)
+  groupdf <- GroupEmb(listdf)
   
   # Screen cells for high gene expression &
   listdf <- BlotTime(listdf, groupdf)
+  
+  # Record data type
+  listdf$lineage = lineage
+  listdf$Directory = Rawdir
+  
   return(listdf)}

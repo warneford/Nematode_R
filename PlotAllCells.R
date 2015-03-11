@@ -1,10 +1,11 @@
 # Function to plot Mean and CV data for cells that highly express reporter gene.
 # LoCell and HiCell indicate lower and upper bound of cells to plot, by default PlotAllCells
 # will plot all cells. LoCell must be 1 or greater. 
+# sdf specifies root of data frame
 # Sort <- c("blot", "time", "CV", "lineage). This sorts the cells either by increasing mean blot,
 # chronological order, by increasing coefficient of variation, or by lineage
-# Outdf specifies whether to silence plot output and simply output desired cell names in a vector
-PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df, sort = "blot", outnames = TRUE) {
+# Outnames specifies whether to silence plot output and simply output desired cell names in a vector
+PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df, sdf,  sort = "blot", outnames = TRUE) {
 
   
 if (sort == "blot") # sort cells in ascending mean blot value and reorder cell name factors
@@ -43,7 +44,7 @@ plot(x = PlotRange, y = df$Mean[PlotRange], xlab="", ylab="",
 axis(2)
 axis(1, at=seq_along(df$Mean),labels=as.character(df$ID), las=2)
 mtext("Mean Expression",side=2,line=2,col="blue")
-title(paste("Cells with high Pal-1 expression"))
+title(paste("Cells with high",sdf$repID, "expression"))
 
 par(new=T)
 plot(1:length(df$Mean[PlotRange]), df$CV[PlotRange],axes=F,xlab="",ylab="",pch=23, bg = "red",cex = 0.5,  
