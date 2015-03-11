@@ -51,6 +51,6 @@ listdf$AverageCellblot2 <- lapply(listdf$cellblot2, cellDFsummary)
 names(listdf$AverageCellblot2) <- EmbOrientationRLB
 
 # Remove redundant SCD data
-listdf <- listdf[!(names(listdf) %in% c("cellblot", "cellblot2"))]
+listdf <- listdf[!(names(listdf) %in% c("cellblot1", "cellblot2"))]
 
 return(listdf)}
