@@ -8,7 +8,6 @@ source("~/Nematode_R/Functions.R")
 
 # Data import and processing
 
-
 # SCDprocess.R extracts SCD data, trims it, groups it by axis orientation, 
 # and normalizes it by Z-plane and raw blot intensity
 Data_A <- SCDprocess(lineage = "RW10890", "RW10890")
@@ -34,6 +33,8 @@ Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
       # Record data type
       Data_B$lineage = "RW10890"
       Data_B$Directory = "RW10890_new"
+
+
 
 
 
