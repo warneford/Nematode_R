@@ -14,7 +14,8 @@ names(list[["SCD_blot"]]) <- gsub("X", "", names(list[["SCD_blot"]]))
 list$Aux_info <- RepAuxfiles(lineage, directory)
 
 # Extract name of reporter
-list$repID <- strsplit(list$Aux_info$name[1], split = "_")[[1]][3]
+foo <- strsplit(list$Aux_info$name[1], split = "_")[[1]]
+list$repID <- foo[grep("([a-z][a-z][a-z].[0-9])", foo)]
 list$repID <- gsub("\\.", "-", list$repID)
 
 # Generate time column for each cell
