@@ -12,8 +12,23 @@ if (ancestors == TRUE) {
   names <- c(names, CellID)
   foo <- Selectcell(names, df)
 } else {
-  foo <- Selectcell(CellID, df) }
+  # for viewing single cell expression data
+  foo <- Selectcell(CellID, df) 
   
+  # Quantify how many replicates are being used in calculations. 
+  Emb <- names(foo[-c(1,2)])
+  
+  # Outputs list of how many data points are present in the cell from each embryo
+  Numvalues <- lapply(Emb, function(col) {
+    length(foo[,col][is.na(foo[,col])==FALSE])
+  })
+  # Crude maximum number of samples available, number of samples at any one timept 
+  # may be less than this number, it is only a guide
+  NumSamples <- length(Numvalues[Numvalues !=0])
+}
+  
+
+
 # compute summary statistics for each timepoint
 foo2 <- cellDFsummary(foo, omit = namecol, IDcol = 1, Timecol = 2)
 
@@ -37,4 +52,9 @@ title(paste(sdf$Directory, "Cell", CellID, sdf$repID, "expression over", plotid)
 par(new=T)
 plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="orange",col="orange", ylim=c(0,1), cex = 0.5)
 axis(side=4)
-mtext("CV",side=4,line=2,col="red")}
+mtext("CV",side=4,line=2,col="red")
+
+# Plot number of samples for single cell visualization
+if (ancestors == FALSE) {
+  text(x = max(foo2$Time)*0.9, y = 1, paste0("Max of ", NumSamples, " Samples"),col = "red", cex = 1 )}
+}
