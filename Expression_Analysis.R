@@ -6,6 +6,7 @@ rm(list=ls())
 source("~/Nematode_R/Functions.R")
 
 
+<<<<<<< HEAD
 
 
 
@@ -13,6 +14,11 @@ source("~/Nematode_R/Functions.R")
 
 # Data import and processing
 
+=======
+# Data import and processing
+
+
+>>>>>>> 1a28e9e5896efa283f2d81dc1cc3ce56e69a7f87
 # SCDprocess.R extracts SCD data, trims it, groups it by axis orientation, 
 # and normalizes it by Z-plane and raw blot intensity
 Data_A <- SCDprocess(lineage = "RW10890", "RW10890")
@@ -22,6 +28,7 @@ Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
 
 # To process data manually:
 
+<<<<<<< HEAD
       # Import SCD data  
       Data_B <- ImportSCD("RW10890_new")
       
@@ -41,6 +48,28 @@ Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
       Data_B$Directory = "RW10890_new"
 
 
+=======
+              # Import SCD data  
+              Data_Sys1 <- ImportSCD("JIM166")
+              
+              # Trim data
+              Data_Sys1 <- Trimming(Data_Sys1, "JIM166", "JIM166")
+              
+              # Group Embryos by Orientation
+              groupdf <- GroupEmb(Data_Sys1)
+              
+
+              # Screen cells for high gene expression &
+              Data_Sys1 <- BlotTime(Data_Sys1, groupdf)
+              
+              # Record data type
+              Data_Sys1$lineage = lineage
+              Data_Sys1$Directory = Rawdir
+
+
+
+# Data Visualization
+>>>>>>> 1a28e9e5896efa283f2d81dc1cc3ce56e69a7f87
 
 
 
