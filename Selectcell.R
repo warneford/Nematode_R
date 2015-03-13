@@ -1,5 +1,5 @@
-# Function to extract data for specific cell or vector of cell names and compute summary statistics
-# eg. ("AB", "ABp", "ABa" etc) drawing from normalized blot dataframe.
+# Function to extract data for specific cell or vector of cell names
+# eg. ("AB", "ABp", "ABa" etc) drawing from blot data.frame
 # namecol specifies how many columns at left are labels
 Selectcell <- function(Cell_names, blotdf, Chronological = TRUE) {
 

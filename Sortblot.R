@@ -6,7 +6,10 @@
 # CVchangeDt is equivalent to CVchangePar for daughter cells
 # Output DaughterCVRatio is the value of the cell CV over the daughter CV
 
-Sortblot <-function(df, CVchangePar = NA, CVchangeDt = NA, LoMean = 0, HiMean = Inf, LoCV = 0, HiCV = Inf, TimeMax = Inf) {
+Sortblot <-function(df, CVchangePar = NA, CVchangeDt = NA, 
+                    LoMean = 0, HiMean = Inf, LoCV = 0, 
+                    HiCV = Inf, TimeMax = Inf,
+                    outnames = FALSE) {
   
   # Source functions
   source("Functions.R")
@@ -16,6 +19,7 @@ Sortblot <-function(df, CVchangePar = NA, CVchangeDt = NA, LoMean = 0, HiMean = 
   outdf <- subset(tempdf,  (CV > LoCV) & (CV < HiCV))
   
   
+  # Subset cells that match CVchangePar argument
   if (is.na(CVchangePar) == FALSE) {
     
     Outcells <- c()
@@ -169,5 +173,5 @@ Sortblot <-function(df, CVchangePar = NA, CVchangeDt = NA, LoMean = 0, HiMean = 
     outdf <- cbind(outdf[,!(names(outdf) %in% "Comment")], Comment =outdf$Comment)
     
   }
-
+  if (outnames == TRUE) {return (as.character(outdf$ID))}
   return(outdf)}

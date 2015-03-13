@@ -33,7 +33,7 @@ if (outnames == TRUE) {
     # remove cell names with duplicate lineages
     for (i in 1:length(foo))
          {TempParent <- GetParents(foo[i])
-          foo <- foo[! foo %in% TempParent]}
+          foo <- foo[! (foo %in% TempParent)]}
     return(foo)
 }
 
