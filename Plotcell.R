@@ -4,7 +4,8 @@
 # sdf specifies source data structure from which df is drawn, used to pass annotations to plot options
 # ancestors specifies whether to plot all previous cells in lineage
 # namecol specifies how many columns at left are labels and should be excluded from calculations
-Plotcell <- function(CellID, df = Data_A$NormZblot$Both,sdf = Data_A, namecol = 2, ancestors = FALSE) {
+# Option outdata specifies whether to output relevant rows from argument data.frame to dataframe
+Plotcell <- function(CellID, df, sdf, namecol = 2, ancestors = FALSE, outdata = FALSE) {
   
 # extracts relevant rows from data frame 
 if (ancestors == TRUE) {
@@ -42,7 +43,7 @@ segments(foo2$Time, foo2$Mean-foo2$SD, foo2$Time, foo2$Mean+foo2$SD)
 segments(foo2$Time-epsilon, foo2$Mean-foo2$SD, foo2$Time+epsilon, foo2$Mean-foo2$SD)
 segments(foo2$Time-epsilon, foo2$Mean+foo2$SD,foo2$Time+epsilon, foo2$Mean+foo2$SD)
 
-mtext("Mean Expression",side=2,line=2)
+mtext("Normalized Mean Expression (AU)",side=2,line=2)
 
 if (ancestors == TRUE) {plotid <- "lineage"
 } else {plotid <- "lifespan"}
@@ -57,4 +58,8 @@ mtext("CV",side=4,line=2,col="red")
 # Plot number of samples for single cell visualization
 if (ancestors == FALSE) {
   text(x = max(foo2$Time)*0.9, y = 1, paste0("Max of ", NumSamples, " Samples"),col = "red", cex = 1 )}
+
+
+if (outdata == TRUE) {return(foo2)}
+
 }

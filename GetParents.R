@@ -1,5 +1,6 @@
 # Outputs a character vector of all ancestor cells of argument cell in chronological order
 GetParents <- function(Cell) {
+  source("GetParent.R")
   Parents <- character(length = nchar(Cell) + 10)
   
   foo <- Cell
