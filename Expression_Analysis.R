@@ -7,13 +7,15 @@ source("~/Nematode_R/Functions.R")
 load("Cell_names.RData")
 load("Combined Pal-1.RData")
 
+Dlin
+Dlin <- AllCells[grep(pattern = "D.+", x = AllCells)]
+Dlindf <- Selectcell(Cell_names = Dlin, blotdf = Data_C$AverageCellblot2$Both)
+Early_DLin <- Sortblot(Dlindf, TimeMax = 280, outnames = TRUE)
+PlotList(Early_DLin ,df = Data_C$NormZblot$Both, sdf = Data_C ,name = "D Lineage_Pal1.pdf",Redundant = FALSE)
 
-Clin <- AllCells[grep(pattern = "C.+", x = AllCells)]
-Clindf <- Selectcell(Cell_names = Clin, blotdf = Data_C$AverageCellblot2$Both)
-Early_CLin <- Sortblot(Clindf, TimeMax = 280, outnames = TRUE)
-PlotList(Early_CLin ,df = Data_C$NormZblot$Both, sdf = Data_C,name = "C Lineage.pdf")
-
-
+foo <- Selectcell(Early_CLin, Data_C$NormZblot$Both, Chronological = FALSE)
+View(foo)
+Plotcell("P1", df = Data_C$NormZblot$Both, sdf = Data_C, ancestors = FALSE, outdata = FALSE)
 
 # Data Visualization
 
@@ -21,7 +23,7 @@ PlotList(Early_CLin ,df = Data_C$NormZblot$Both, sdf = Data_C,name = "C Lineage.
 NormView(Data_Sys1, "JIM 166 Sys-1")
 
 # Subset Averaged blot data for specific expression profiles
-Data_C <- SortBlot2(Data_C, ChangeCVPar = , ChangeCVDt = ,  MeanLo = , MeanHi = Inf, CVLo = 0.0, CVHi = ,MaxTime = Inf)
+Data_Sys1 <- SortBlot2(Data_Sys1, ChangeCVPar = , ChangeCVDt = ,  MeanLo = 100 , MeanHi = Inf, CVLo = 0.0, CVHi = ,MaxTime = Inf)
 View(Data_C$SortAvCellBlot$Both)
 
 
@@ -31,7 +33,7 @@ names <- PlotAllCells(LoCell = 1, HiCell = , df = Data_C$SortAvCellBlot$Both, so
 names <- as.character(names)
 names
 # plots specific cell reporter expression over cell lifetime
-Plotcell("Capapp", df = Data_C$NormZblot$Both, sdf = Data_C, ancestors = FALSE, outdata = FALSE)
+Plotcell("Cpppa", df = Data_C$NormZblot$Both, sdf = Data_C, ancestors = FALSE, outdata = FALSE)
 
 # plots entire lineage of reporter expression over time
 Plotcell("P2", df =  Data_C$NormZblot$Both,sdf = Data_C, ancestors = TRUE, outdata = FALSE)

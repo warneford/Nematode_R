@@ -11,27 +11,28 @@ Plotcell <- function(CellID, df, sdf, namecol = 2, ancestors = FALSE, outdata = 
 if (ancestors == TRUE) {
   names <- GetParents(CellID)
   names <- c(names, CellID)
-  foo <- Selectcell(names, df)
+  foo <- Selectcell(names, df, Chronological = TRUE)
 } else {
   # for viewing single cell expression data
-  foo <- Selectcell(CellID, df) 
-  
-  # Quantify how many replicates are being used in calculations. 
-  Emb <- names(foo[-c(1,2)])
-  
-  # Outputs list of how many data points are present in the cell from each embryo
-  Numvalues <- lapply(Emb, function(col) {
-    length(foo[,col][is.na(foo[,col])==FALSE])
-  })
-  # Crude maximum number of samples available, number of samples at any one timept 
-  # may be less than this number, it is only a guide
-  NumSamples <- length(Numvalues[Numvalues !=0])
-}
-  
+  foo <- Selectcell(CellID, df, Chronological = TRUE) 
+    }
+
+
+# Tabulate number of replicates at each time point
+  # Generate index of timepoints from subsetted data
+  IndexTm <- 1:nrow(foo)
+  NumReplicates <- c()
+
+        for (i in 1:nrow(foo)) {
+            temp <- foo[i,-c(1,2)]
+            nrep <- length(temp[is.na(temp) == FALSE])
+            NumReplicates <- c(NumReplicates, nrep)}  
 
 
 # compute summary statistics for each timepoint
 foo2 <- cellDFsummary(foo, omit = namecol, IDcol = 1, Timecol = 2)
+foo2$NumReplicates <- NumReplicates
+
 
 par(mar=c(5,4,4,4))
 plot(x =foo2$Time, y = foo2$Mean, xlab="Time",ylab="",pch=20, col=foo2$ID, 
@@ -45,6 +46,13 @@ segments(foo2$Time-epsilon, foo2$Mean+foo2$SD,foo2$Time+epsilon, foo2$Mean+foo2$
 
 mtext("Normalized Mean Expression (AU)",side=2,line=2)
 
+# Plot number of replicates at each time point for single cell visualization
+if (ancestors == FALSE) {
+  text(foo2$Time, foo2$Mean*0.2, labels = foo2$NumReplicates, cex = 0.7 )}
+
+
+
+
 if (ancestors == TRUE) {plotid <- "lineage"
 } else {plotid <- "lifespan"}
 
@@ -53,11 +61,7 @@ title(paste(sdf$Directory, "Cell", CellID, sdf$repID, "expression over", plotid)
 par(new=T)
 plot(foo2$Time, foo2$CV,axes=F,xlab="",ylab="",pch=23, bg="orange",col="orange", ylim=c(0,1), cex = 0.5)
 axis(side=4)
-mtext("CV",side=4,line=2,col="red")
-
-# Plot number of samples for single cell visualization
-if (ancestors == FALSE) {
-  text(x = max(foo2$Time)*0.9, y = 1, paste0("Max of ", NumSamples, " Samples"),col = "red", cex = 1 )}
+mtext("CV",side=4,line=2,col="orange")
 
 
 if (outdata == TRUE) {return(foo2)}
