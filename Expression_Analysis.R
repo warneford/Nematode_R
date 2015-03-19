@@ -14,7 +14,6 @@ MSlin <- AllCells[grep(pattern = "MS.+", x = AllCells)]
 Clin <- AllCells[grep(pattern = "C.+", x = AllCells)]
 
 
-
 Plotcell("MSapa", df = Data_Sys1$NormZblot$Both, sdf = Data_Sys1, ancestors = TRUE, outdata = FALSE)
 Plotcell("MSppa", df = Data_C$SCD_blot, sdf = Data_C, ancestors = TRUE, outdata = FALSE)
 
