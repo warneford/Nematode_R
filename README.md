@@ -86,7 +86,19 @@ Scripts:
                           listdf            list of data frames, output from trimmingSCD.R
                           groupdf           list of data frames, output from GroupEmb.R
                           
-  NormView.R      
+  NormView.R      NormView(listdf, dataname)
+                  NormView assesses the success of normalization in Cell_Timeline.R. Plots mean versus SD of cell averaged
+                  Z-normalized blot data against Z- and reference-embryo normalized blot data. Outputs pdf file
+                  
+                  Argument
+                          listdf            list of data frames, output from Cell_Timeline.R
+                          dataname          name of dataset, for plot and file names.
+                          
+  Sortblot2.R     Sortblot2(listdf,ChangeCVPar = NA, ChangeCVDt = NA, MeanLo = 0, MeanHi = Inf, CVLo = 0, CVHi = Inf,MaxTime= )
+                  Sortblot2 is a wrapper that runs Sortblot.R on axis-grouped data. 
+                  
+                  Argument
+                          
                       
 
 
