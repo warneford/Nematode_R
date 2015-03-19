@@ -21,5 +21,10 @@ list$repID <- gsub("\\.", "-", list$repID)
 # Generate time column for each cell
 library(stringr)
 list$SCD_blot$cellTime <- as.numeric(str_split_fixed(list$SCD_blot$cellTime, ":", 2)[,2])
+names(list$SCD_blot)[names(list$SCD_blot) == "cellTime"] <- "Time"
+
+# Reorder columns for correct indexing
+list$SCD_blot <- cbind(ID = list$SCD_blot[,2], list$SCD_blot[,-c(2)])
+
 
 return(list) }

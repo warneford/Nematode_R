@@ -5,7 +5,7 @@
 # Sort <- c("blot", "time", "CV", "lineage). This sorts the cells either by increasing mean blot,
 # chronological order, by increasing coefficient of variation, or by lineage
 # Outnames specifies whether to silence plot output and simply output desired cell names in a vector
-PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df, sdf,  sort = "blot", outnames = TRUE) {
+PlotAllCells <- function(LoCell = 1, HiCell = length(df$ID), df, sdf,  sort = "blot", outnames = FALSE) {
 
   
 if (sort == "blot") # sort cells in ascending mean blot value and reorder cell name factors

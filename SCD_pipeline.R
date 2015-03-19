@@ -12,17 +12,18 @@ Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
 # To process data manually:
 
 # Import SCD data  
-Data_Wrm1 <- ImportSCD("Wrm_1_RWT")
+Data_A <- ImportSCD("RW10890")
+abc <- OptimZ(Data_A$SCD_Data)
 
 # Trim data
 
-Data_Wrm1 <- Trimming(Data_Wrm1, "Wrm_1_RWT")
+Data_A <- Trimming(Data_A, "RW10890")
 
 # Group Embryos by Orientation
-groupdf <- GroupEmb(Data_Wrm1)
+groupdf <- GroupEmb(Data_A)
 
 # Screen cells for high gene expression &
-listdf <- BlotTime(Data_Wrm1, groupdf)
+abc <- BlotTime(Data, groupdf)
 
 # Record data type
 Data_B$lineage = "RW10890"

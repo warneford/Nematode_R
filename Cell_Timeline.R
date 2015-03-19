@@ -7,9 +7,6 @@ BlotTime <- function(listdf, Embdata) {
 EmbOrientationRL <- c("R", "L")
 EmbOrientationRLB <- c(EmbOrientationRL, "Both")
 
-# generate list of cell names
-CellID <- levels(listdf$SCD_blot$cell)
-
 # Generate Z normalization factor
 Zcorr <- OptimZ(listdf$SCD_Data)
 
@@ -18,7 +15,7 @@ listdf <- listdf[!(names(listdf) %in% "SCD_Data")]
 
 # linearly normalize embryo orientation-sorted blot values in each experiment to middle Z plane
 listdf[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL, 
-       function(lst) {cbind(ID = listdf$SCD_blot$cell, Time = listdf$SCD_blot$cellTime, data.frame(lapply(Embdata[[lst]], 
+       function(lst) {cbind(ID = listdf$SCD_blot$ID, Time = listdf$SCD_blot$Time, data.frame(lapply(Embdata[[lst]], 
        function(df) { Znorm <- (33-df$zraw)*Zcorr + 1
         df$blot*Znorm})))}) 
         names(listdf$EmbOr_NormalizedZ_blot) <- EmbOrientationRL
@@ -27,7 +24,7 @@ listdf[["EmbOr_NormalizedZ_blot"]] <-  lapply(EmbOrientationRL,
 listdf$EmbOr_NormalizedZ_blot$Both <- cbind(listdf$EmbOr_NormalizedZ_blot$R, listdf$EmbOr_NormalizedZ_blot$L[-c(1,2)])
 
 # Collapse Z-normalized blot data by cell identity.
-listdf$cellblot1 <- lapply(listdf$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$cell), mean, na.action = na.exclude)})
+listdf$cellblot1 <- lapply(listdf$EmbOr_NormalizedZ_blot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$ID), mean, na.action = na.exclude)})
 
 # Normalize embryo blot data by raw blot intensity, relative to reference embryo
 Blotscaledf <- lapply(listdf$cellblot1, Blotscale)
@@ -35,9 +32,10 @@ listdf$NormZblot <- lapply(EmbOrientationRLB, function(Or) {BlotApply(listdf$Emb
 names(listdf$NormZblot) <- EmbOrientationRLB
 
 # Collapse Z-normalized/blot-normalized blot data by cell identity.
-listdf$cellblot2 <- lapply(listdf$NormZblot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$cell), mean, na.action = na.exclude)})
+listdf$cellblot2 <- lapply(listdf$NormZblot, function(df) {aggregate(df[-c(1, 2)], list(Cell = listdf$SCD_blot$ID), mean, na.action = na.exclude)})
 
 # Add first time point to each cell average entry
+CellID <- levels(listdf$SCD_blot$ID)
 CellStartTimes <- unlist(lapply(CellID, function(Cell) {listdf$EmbOr_NormalizedZ_blot$Both$Time[listdf$EmbOr_NormalizedZ_blot$Both$ID %in% Cell][1]}))
 listdf$cellblot2 <- lapply(listdf$cellblot2, function(df) {cbind(df[1], Time = CellStartTimes, df[-c(1)])})
 names(listdf$cellblot2) <- EmbOrientationRLB
