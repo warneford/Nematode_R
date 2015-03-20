@@ -1,7 +1,5 @@
 # Function to group embryos by axis orientation
-# input arguments are list of data.frames, 
-# name of lineage to identify strain in filenames,
-# and directory containing Aux_info files
+# input argument is data structure that is output from trimmingSCD.R
 
 GroupEmb <- function(listdf) {
   # Generate list of embryos grouped by axis

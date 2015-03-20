@@ -4,7 +4,7 @@
 # and normalizes it by Z-plane and raw blot intensity
 Data_A <- SCDprocess(lineage = "RW10890", "RW10890")
 Data_B <- SCDprocess(lineage = "RW10890", "RW10890_new")
-Data_C <- SCDprocess(lineage = "RW10890", "Combined RW10890")
+Data_C <- SCDprocess(lineage = "RW10890", Rawdir = "Combined RW10890")
 Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
 
 
@@ -13,7 +13,6 @@ Data_Sys1 <- SCDprocess(lineage = "JIM166", "JIM166")
 
 # Import SCD data  
 Data_A <- ImportSCD("RW10890")
-abc <- OptimZ(Data_A$SCD_Data)
 
 # Trim data
 
@@ -23,9 +22,9 @@ Data_A <- Trimming(Data_A, "RW10890")
 groupdf <- GroupEmb(Data_A)
 
 # Screen cells for high gene expression &
-abc <- BlotTime(Data, groupdf)
+Data_A <- BlotTime(Data_A, groupdf)
 
 # Record data type
-Data_B$lineage = "RW10890"
-Data_B$Directory = "RW10890_new"
-names(Early_CLin)
+Data_A$lineage = "RW10890"
+Data_A$Directory = "RW10890_new"
+

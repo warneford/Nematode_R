@@ -12,7 +12,7 @@ PlotList <- function(list, df, sdf, name = NA, Redundant = FALSE) {
               {TempParent <- GetParents(foo[i])
                foo <- foo[! (foo %in% TempParent)]}
             }
-    
+
     pdf(onefile = TRUE, file = name)
     for (i in 1:length(foo))
     {Plotcell(foo[i], df = df, sdf = sdf, ancestors = TRUE)}
